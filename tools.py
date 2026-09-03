@@ -5,11 +5,9 @@ import razorpay
 from dotenv import load_dotenv
 from database import DB_NAME, log_audit, deduct_reserve_vault
 from guardrails import validate_purchase_policy
-import time
 
 load_dotenv()
 
-# Check Streamlit Cloud secrets first, then fallback to local os.getenv
 def get_secret(key_name):
     try:
         import streamlit as st
@@ -21,10 +19,6 @@ def get_secret(key_name):
 
 RAZORPAY_KEY = get_secret("RAZORPAY_KEY_ID")
 RAZORPAY_SECRET = get_secret("RAZORPAY_KEY_SECRET")
-
-client = None
-if RAZORPAY_KEY and RAZORPAY_SECRET:
-    client = razorpay.Client(auth=(RAZORPAY_KEY, RAZORPAY_SECRET))
 
 client = None
 if RAZORPAY_KEY and RAZORPAY_SECRET:
@@ -74,10 +68,10 @@ def execute_razorpay_order(sku: str, units: int, unit_price: float, supplier: st
         log_audit(sku, "GATEWAY_TIMEOUT", "Simulated 504 Gateway Timeout -> Rolling back state", "FAILED_GRACEFUL", amount_inr=total_inr, details="Razorpay sandbox simulation: Network timeout. Fallback triggered; no state corrupted.")
         return {"status": "FAILED_GRACEFUL", "reason": "Simulated Gateway Timeout (Circuit Breaker Handled)", "amount_inr": total_inr}
 
-    # 4. Standard Razorpay Order & Payment Link Execution
+    # 4. Pure Machine-to-Machine Razorpay Order Execution
     try:
         if not client:
-            raise ValueError("Razorpay credentials missing in .env")
+            raise ValueError("Razorpay credentials missing")
             
         receipt_id = f"uap_{sku.lower()}_{int(total_inr)}"
         order_payload = {
@@ -93,36 +87,11 @@ def execute_razorpay_order(sku: str, units: int, unit_price: float, supplier: st
             }
         }
         
-        # Create Order on Razorpay
+        # Native Razorpay Order (no link quota limits)
         order_response = client.order.create(data=order_payload)
         order_id = order_response.get("id")
 
-        # Small pause to respect sandbox rate limits
-        time.sleep(1.5)
-
-        # Create Payment Link tied to this order
-        payment_link_payload = {
-            "amount": int(total_inr * 100),
-            "currency": "INR",
-            "accept_partial": False,
-            "reference_id": order_id,
-            "description": f"AutoProcure Settlement: {units}x {sku} via {supplier}",
-            "customer": {
-                "name": "AutoProcure Store Vault",
-                "email": "procure@autoprocure.internal",
-                "contact": "+919876543210"
-            },
-            "notify": {"sms": False, "email": False},
-            "reminder_enable": False,
-            "notes": {
-                "sku": sku,
-                "order_id": order_id
-            }
-        }
-        link_response = client.payment_link.create(data=payment_link_payload)
-        payment_url = link_response.get("short_url")
-        
-        # Deduct UAP Vault & Update Inventory
+        # Deduct Vault & Update Inventory
         deduct_reserve_vault(total_inr)
         conn = sqlite3.connect(DB_NAME)
         cursor = conn.cursor()
@@ -130,8 +99,8 @@ def execute_razorpay_order(sku: str, units: int, unit_price: float, supplier: st
         conn.commit()
         conn.close()
         
-        log_audit(sku, "ORDER_CREATED", "Automated Checkout", "SUCCESS", order_id=order_id, amount_inr=total_inr, details=payment_url)
-        return {"status": "SUCCESS", "order_id": order_id, "payment_url": payment_url, "amount_inr": total_inr}
+        log_audit(sku, "ORDER_CREATED", "Automated Checkout", "SUCCESS", order_id=order_id, amount_inr=total_inr, details="Settled via NPCI UAP Protocol")
+        return {"status": "SUCCESS", "order_id": order_id, "amount_inr": total_inr}
 
     except Exception as e:
         log_audit(sku, "API_FAILURE", "Exception Handled", "FAILED", amount_inr=total_inr, details=str(e))
