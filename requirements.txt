@@ -1,0 +1,6 @@
+streamlit
+razorpay
+langchain-groq
+pandas
+python-dotenv
+requests
