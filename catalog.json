@@ -1,0 +1,22 @@
+[
+  { "sku": "SKU-KB-01", "item_name": "Mechanical Keyboard Pro", "unit_price_inr": 2500, "min_order_qty": 2, "available_stock": 50, "supplier": "TechSupply Direct", "bulk_discount": null },
+  { "sku": "SKU-MS-02", "item_name": "Wireless Ergonomic Mouse", "unit_price_inr": 1200, "min_order_qty": 3, "available_stock": 40, "supplier": "TechSupply Direct", "bulk_discount": { "min_qty": 7, "discount_pct": 10 } },
+  { "sku": "SKU-HUB-03", "item_name": "USB-C Multiport Hub", "unit_price_inr": 1800, "min_order_qty": 2, "available_stock": 30, "supplier": "GadgetWholesale Ltd", "bulk_discount": null },
+  { "sku": "SKU-MON-04", "item_name": "27-inch 4K IPS Monitor", "unit_price_inr": 18500, "min_order_qty": 1, "available_stock": 15, "supplier": "TechSupply Direct", "bulk_discount": null },
+  { "sku": "SKU-CBL-05", "item_name": "Braided 100W Type-C Cable", "unit_price_inr": 450, "min_order_qty": 10, "available_stock": 100, "supplier": "GadgetWholesale Ltd", "bulk_discount": { "min_qty": 15, "discount_pct": 20 } },
+  { "sku": "SKU-HD-06", "item_name": "ANC Studio Headphones", "unit_price_inr": 4200, "min_order_qty": 2, "available_stock": 25, "supplier": "ShadyElectronics Inc", "bulk_discount": null },
+  { "sku": "SKU-SSD-07", "item_name": "1TB NVMe M.2 SSD", "unit_price_inr": 5800, "min_order_qty": 2, "available_stock": 35, "supplier": "TechSupply Direct", "bulk_discount": null },
+  { "sku": "SKU-RAM-08", "item_name": "16GB DDR5 5600MHz RAM", "unit_price_inr": 4100, "min_order_qty": 2, "available_stock": 45, "supplier": "TechSupply Direct", "bulk_discount": null },
+  { "sku": "SKU-CAM-09", "item_name": "1080p 60fps Pro Webcam", "unit_price_inr": 3100, "min_order_qty": 2, "available_stock": 25, "supplier": "GadgetWholesale Ltd", "bulk_discount": null },
+  { "sku": "SKU-MIC-10", "item_name": "USB Condenser Studio Mic", "unit_price_inr": 3600, "min_order_qty": 2, "available_stock": 20, "supplier": "GadgetWholesale Ltd", "bulk_discount": null },
+  { "sku": "SKU-MAT-11", "item_name": "Extended Desk Mat (90x40cm)", "unit_price_inr": 650, "min_order_qty": 5, "available_stock": 60, "supplier": "GadgetWholesale Ltd", "bulk_discount": { "min_qty": 10, "discount_pct": 15 } },
+  { "sku": "SKU-STN-12", "item_name": "Aluminum Laptop Riser Stand", "unit_price_inr": 1450, "min_order_qty": 3, "available_stock": 30, "supplier": "TechSupply Direct", "bulk_discount": null },
+  { "sku": "SKU-CHG-13", "item_name": "65W GaN Fast Wall Charger", "unit_price_inr": 1600, "min_order_qty": 3, "available_stock": 50, "supplier": "GadgetWholesale Ltd", "bulk_discount": null },
+  { "sku": "SKU-PWR-14", "item_name": "20000mAh PD Power Bank", "unit_price_inr": 2200, "min_order_qty": 2, "available_stock": 40, "supplier": "GadgetWholesale Ltd", "bulk_discount": null },
+  { "sku": "SKU-LGT-15", "item_name": "Monitor LED ScreenBar Light", "unit_price_inr": 2900, "min_order_qty": 2, "available_stock": 20, "supplier": "TechSupply Direct", "bulk_discount": null },
+  { "sku": "SKU-ROU-16", "item_name": "Wi-Fi 6 Dual-Band Router", "unit_price_inr": 4800, "min_order_qty": 2, "available_stock": 18, "supplier": "GadgetWholesale Ltd", "bulk_discount": null },
+  { "sku": "SKU-SWT-17", "item_name": "8-Port Gigabit Desktop Switch", "unit_price_inr": 1750, "min_order_qty": 2, "available_stock": 25, "supplier": "GadgetWholesale Ltd", "bulk_discount": null },
+  { "sku": "SKU-SPK-18", "item_name": "Compact Stereo Desktop Speakers", "unit_price_inr": 1950, "min_order_qty": 2, "available_stock": 22, "supplier": "UnknownVendor LLC", "bulk_discount": null },
+  { "sku": "SKU-ENC-19", "item_name": "M.2 NVMe Tool-Free Enclosure", "unit_price_inr": 1350, "min_order_qty": 3, "available_stock": 30, "supplier": "GadgetWholesale Ltd", "bulk_discount": null },
+  { "sku": "SKU-CLN-20", "item_name": "Electronics Screen Cleaning Kit", "unit_price_inr": 350, "min_order_qty": 10, "available_stock": 80, "supplier": "GadgetWholesale Ltd", "bulk_discount": { "min_qty": 15, "discount_pct": 25 } }
+]
