@@ -5,11 +5,26 @@ import razorpay
 from dotenv import load_dotenv
 from database import DB_NAME, log_audit, deduct_reserve_vault
 from guardrails import validate_purchase_policy
+import time
 
 load_dotenv()
 
-RAZORPAY_KEY = os.getenv("RAZORPAY_KEY_ID")
-RAZORPAY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+# Check Streamlit Cloud secrets first, then fallback to local os.getenv
+def get_secret(key_name):
+    try:
+        import streamlit as st
+        if key_name in st.secrets:
+            return st.secrets[key_name]
+    except Exception:
+        pass
+    return os.getenv(key_name)
+
+RAZORPAY_KEY = get_secret("RAZORPAY_KEY_ID")
+RAZORPAY_SECRET = get_secret("RAZORPAY_KEY_SECRET")
+
+client = None
+if RAZORPAY_KEY and RAZORPAY_SECRET:
+    client = razorpay.Client(auth=(RAZORPAY_KEY, RAZORPAY_SECRET))
 
 client = None
 if RAZORPAY_KEY and RAZORPAY_SECRET:
@@ -81,6 +96,9 @@ def execute_razorpay_order(sku: str, units: int, unit_price: float, supplier: st
         # Create Order on Razorpay
         order_response = client.order.create(data=order_payload)
         order_id = order_response.get("id")
+
+        # Small pause to respect sandbox rate limits
+        time.sleep(1.5)
 
         # Create Payment Link tied to this order
         payment_link_payload = {
