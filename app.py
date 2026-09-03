@@ -70,13 +70,6 @@ with col2:
     st.subheader("Live UAP Audit Trail & Telemetry")
     st.dataframe(
         df_logs,
-        column_config={
-            "details": st.column_config.LinkColumn(
-                "Payment Link / Details",
-                validate=r"^https://rzp\.io/.*$",
-                display_text=r"https://rzp\.io/([a-zA-Z0-9/]+)"
-            )
-        },
         use_container_width=True,
         height=450
     )
@@ -85,6 +78,21 @@ with col2:
 df_pending = df_logs[df_logs["status"] == "BLOCKED"]
 if not df_pending.empty:
     st.warning("Action Required: High-Value or Restricted Transactions Awaiting Authorization")
+    
+    if st.button("⚡ Approve All Pending Escalations", type="primary"):
+        for _, row in df_pending.iterrows():
+            conn = sqlite3.connect(DB_NAME)
+            cursor = conn.cursor()
+            cursor.execute("UPDATE audit_logs SET status = 'RESOLVED' WHERE id = ?", (row['id'],))
+            conn.commit()
+            conn.close()
+            
+            cat_info = query_catalog(row["sku"])
+            if cat_info:
+                units = int(row['amount_inr'] / cat_info['unit_price_inr'])
+                execute_razorpay_order(row["sku"], units, cat_info["unit_price_inr"], cat_info["supplier"], force_approved=True)
+        st.rerun()
+
     for _, row in df_pending.iterrows():
         c_desc, c_btn = st.columns([4, 1])
         with c_desc:
@@ -100,5 +108,5 @@ if not df_pending.empty:
                 cat_info = query_catalog(row["sku"])
                 if cat_info:
                     units = int(row['amount_inr'] / cat_info['unit_price_inr'])
-                    res = execute_razorpay_order(row["sku"], units, cat_info["unit_price_inr"], cat_info["supplier"], force_approved=True)
+                    execute_razorpay_order(row["sku"], units, cat_info["unit_price_inr"], cat_info["supplier"], force_approved=True)
                 st.rerun()
