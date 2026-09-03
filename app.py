@@ -9,7 +9,7 @@ init_db()
 
 st.set_page_config(page_title="AutoProcure AI - UAP Agentic Engine", layout="wide")
 st.title("AutoProcure: Autonomous B2B Restock Engine")
-st.caption("Razorpay AI Builder Track 01 Submission | NPCI UAP Protocol & Bounded Commerce")
+
 
 # Controls Bar
 col_actions, col_fail, col_reset = st.columns([3, 1.5, 1])
