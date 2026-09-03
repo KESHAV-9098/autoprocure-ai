@@ -73,7 +73,8 @@ with col2:
         column_config={
             "details": st.column_config.LinkColumn(
                 "Payment Link / Details",
-                display_text="Open Razorpay Checkout"
+                validate=r"^https://rzp\.io/.*$",
+                display_text=r"https://rzp\.io/([a-zA-Z0-9/]+)"
             )
         },
         use_container_width=True,
