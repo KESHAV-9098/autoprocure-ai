@@ -45,7 +45,7 @@ def init_db():
     
     cursor.execute("SELECT COUNT(*) FROM reserve_vault")
     if cursor.fetchone()[0] == 0:
-        cursor.execute("INSERT INTO reserve_vault VALUES (1, 100000.0, 0.0, 50000.0)")
+        cursor.execute("INSERT INTO reserve_vault VALUES (1, 300000.0, 0.0, 200000.0)")
 
     cursor.execute("SELECT COUNT(*) FROM inventory")
     if cursor.fetchone()[0] == 0:
